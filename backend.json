@@ -1,0 +1,299 @@
+{
+  "entities": {
+    "Account": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Account",
+      "type": "object",
+      "description": "Represents a financial account within the Chart of Accounts.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Account entity."
+        },
+        "code": {
+          "type": "string",
+          "description": "Account code (e.g., 1010 for Cash)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Account name (e.g., Cash, Accounts Receivable)."
+        },
+        "category": {
+          "type": "string",
+          "description": "Account category (Asset, Liability, Equity, Revenue, Expense)."
+        },
+        "normalBalance": {
+          "type": "string",
+          "description": "Normal balance of the account (Debit or Credit)."
+        },
+        "financialReportRelation": {
+          "type": "string",
+          "description": "Relation to financial reports (e.g., Balance Sheet, Income Statement)."
+        }
+      },
+      "required": [
+        "id",
+        "code",
+        "name",
+        "category",
+        "normalBalance",
+        "financialReportRelation"
+      ]
+    },
+    "Transaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Transaction",
+      "type": "object",
+      "description": "Represents a financial transaction with debit and credit entries.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Transaction entity."
+        },
+        "transactionDate": {
+          "type": "string",
+          "description": "Date of the transaction.",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the transaction."
+        }
+      },
+      "required": [
+        "id",
+        "transactionDate",
+        "description"
+      ]
+    },
+    "JournalEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "JournalEntry",
+      "type": "object",
+      "description": "Represents a single debit or credit entry in a transaction.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the JournalEntry entity."
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "Reference to Transaction. (Relationship: Transaction 1:N JournalEntry)"
+        },
+        "accountId": {
+          "type": "string",
+          "description": "Reference to Account. (Relationship: Account 1:N JournalEntry)"
+        },
+        "debit": {
+          "type": "number",
+          "description": "Debit amount for the entry."
+        },
+        "credit": {
+          "type": "number",
+          "description": "Credit amount for the entry."
+        }
+      },
+      "required": [
+        "id",
+        "transactionId",
+        "accountId",
+        "debit",
+        "credit"
+      ]
+    },
+    "AuditLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AuditLog",
+      "type": "object",
+      "description": "Represents a log of user activities and changes made within the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AuditLog entity."
+        },
+        "user": {
+          "type": "string",
+          "description": "Identifier for the user/session (e.g., anonymous user ID)."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of the audit event.",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "string",
+          "description": "Description of the action performed (e.g., 'Created Account', 'Updated Transaction')."
+        },
+        "details": {
+          "type": "string",
+          "description": "Detailed information about the audit event (e.g., changes made)."
+        }
+      },
+      "required": [
+        "id",
+        "user",
+        "timestamp",
+        "action",
+        "details"
+      ]
+    },
+    "StockCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "StockCard",
+      "type": "object",
+      "description": "Represents the movement of stock items.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the StockCard entity."
+        },
+        "itemId": {
+          "type": "string",
+          "description": "Reference to Item. (Relationship: Item 1:N StockCard)"
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "Reference to Transaction. (Relationship: Transaction 1:N StockCard)"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of the stock movement.",
+          "format": "date-time"
+        },
+        "quantityIn": {
+          "type": "number",
+          "description": "Quantity of stock received."
+        },
+        "quantityOut": {
+          "type": "number",
+          "description": "Quantity of stock issued."
+        },
+        "balance": {
+          "type": "number",
+          "description": "Balance stock quantity."
+        }
+      },
+      "required": [
+        "id",
+        "itemId",
+        "transactionId",
+        "date",
+        "quantityIn",
+        "quantityOut",
+        "balance"
+      ]
+    },
+    "Item": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Item",
+      "type": "object",
+      "description": "Represents a stock item.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Item entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the stock item."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the stock item."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Measurement unit of the item (e.g., pieces)."
+        },
+        "cost": {
+          "type": "number",
+          "description": "Cost price of the stock item."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "unit",
+        "cost"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/company/{profileId}",
+        "definition": {
+          "entityName": "CompanyProfile",
+          "description": "Stores company profile information like name, address, and logo. There will typically only be one document in this collection."
+        }
+      },
+      {
+        "path": "/accounts/{accountId}",
+        "definition": {
+          "entityName": "Account",
+          "schema": {
+            "$ref": "#/backend/entities/Account"
+          },
+          "description": "Stores financial account information."
+        }
+      },
+      {
+        "path": "/transactions/{transactionId}",
+        "definition": {
+          "entityName": "Transaction",
+          "schema": {
+            "$ref": "#/backend/entities/Transaction"
+          },
+          "description": "Stores financial transaction details."
+        }
+      },
+      {
+        "path": "/journal_entries/{journalEntryId}",
+        "definition": {
+          "entityName": "JournalEntry",
+          "schema": {
+            "$ref": "#/backend/entities/JournalEntry"
+          },
+          "description": "Stores individual journal entry details."
+        }
+      },
+      {
+        "path": "/audit_logs/{auditLogId}",
+        "definition": {
+          "entityName": "AuditLog",
+          "schema": {
+            "$ref": "#/backend/entities/AuditLog"
+          },
+          "description": "Stores audit logs for tracking activities."
+        }
+      },
+      {
+        "path": "/items/{itemId}",
+        "definition": {
+          "entityName": "Item",
+          "schema": {
+            "$ref": "#/backend/entities/Item"
+          },
+          "description": "Stores stock item information."
+        }
+      },
+      {
+        "path": "/stock_cards/{stockCardId}",
+        "definition": {
+          "entityName": "StockCard",
+          "schema": {
+            "$ref": "#/backend/entities/StockCard"
+          },
+          "description": "Stores stock card movement details."
+        }
+      }
+    ],
+    "reasoning": "With the removal of user roles, the structure is simplified. All data is in top-level collections. Access is controlled at a global level by checking for any authenticated user (including anonymous), allowing for real-time collaboration across devices without user-specific segregation."
+  }
+}
